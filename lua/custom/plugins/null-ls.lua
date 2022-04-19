@@ -3,7 +3,7 @@ local b = null_ls.builtins
 
 local sources = {
 
-   b.formatting.prettierd.with { filetypes = { "markdown", } },
+   b.formatting.prettierd.with { filetypes = {"lua", "html", "json", "yaml", "markdown",} },
    b.formatting.deno_fmt,
 
    -- Lua
