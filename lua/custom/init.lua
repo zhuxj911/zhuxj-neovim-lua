@@ -39,6 +39,8 @@ map('n', 'sk', ':set nosplitright<CR>:split<CR>')
 -- Copy to system clippboard
 map("n", "<leader>y", '"+y')
 map("v", "<leader>y", '"+y')
+-- Y复制到系统剪切板
+map('v', 'Y', [["+y]])
 
 -- Paste from system clippboard
 map("n", "<leader>p", '"+p')

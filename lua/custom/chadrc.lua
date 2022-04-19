@@ -8,6 +8,7 @@ M.options = {
   relativenumber = true,
 
   -- 配置剪切板
+  clipboard = "",
   -- clipboard = "unnamedplus",
 --[[
 vim 通过寄存器 * 或 + 与系统剪贴板相互支持，可过reg命令查看
@@ -61,20 +62,75 @@ vim 通过寄存器 * 或 + 与系统剪贴板相互支持，可过reg命令查�
 }
 
 M.ui = {
-   theme = "gruvchad",
+    hl_override = "", -- path of your file that contains highlights
+    italic_comments = false,
+    theme = "chadracula", -- default theme
+	-- theme = "gruvchad",
+
+   -- Change terminal bg to nvim theme's bg color so it'll match well
+   -- For Ex : if you have onedark set in nvchad, set onedark's bg color on your terminal
+   transparency = false,
 }
 
 -- Install plugins
 local userPlugins = require "custom.plugins" -- path to table
 M.plugins = {
    install = userPlugins,
-
-   options={
-    lspconfig = {
-      setup_lspconf = "custom.plugins.lspconfig",
-    },
+   -- enable/disable plugins (false for disable)
+   status = {
+      blankline = true, -- indentline stuff
+      bufferline = true, -- manage and preview opened buffers
+      colorizer = false, -- color RGB, HEX, CSS, NAME color codes
+      comment = true, -- easily (un)comment code, language aware
+      alpha = true, -- dashboard
+      better_escape = true, -- map to <ESC> with no lag
+      feline = true, -- statusline
+      gitsigns = true,
+      lspsignature = true, -- lsp enhancements
+      vim_matchup = true, -- improved matchit
+      cmp = true,
+      nvimtree = true,
+      autopairs = true,
    },
 
+	options={
+		packer = {
+			init_file = "plugins.packerInit",
+		},
+		autopairs = { loadAfter = "nvim-cmp" },
+		cmp = {
+			lazy_load = true,
+		},
+		lspconfig = {
+			setup_lspconf = "custom.plugins.lspconfig",
+		},
+		nvimtree = {
+         -- packerCompile required after changing lazy_load
+         lazy_load = true,
+		},
+		luasnip = {
+			snippet_path = {},
+		},
+		statusline = {
+			-- hide, show on specific filetypes
+			hidden = {
+				"help",
+				"NvimTree",
+				"terminal",
+				"alpha",
+			},
+			shown = {},
+
+			-- truncate statusline on small screens
+			shortline = true,
+			style = "default", -- default, round , slant , block , arrow
+		},
+		esc_insertmode_timeout = 300,
+	},
+	default_plugin_config_replace = {
+		dashboard = "custom.plugins.dashboard",
+	},
+	default_plugin_remove = {},
 }
 
 return M
