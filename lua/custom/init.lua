@@ -1,19 +1,10 @@
--- 指定python的执行路径， neovim 7.0 以上版本只支持python3.4+
-if vim.fn.has("windows") == 1 then
-    vim.g.python3_host_prog = "C:/MyApp/Python310/python.exe" --windows
-else  -- mac and linux
-    vim.g.python3_host_prog = "/usr/local/bin/python3" --macos
-end
--- vim.g.loaded_python3_provider = 0  -- disable Python3 support
-
--- 在文件保存时自动删除行末的空白符， 非常棒的功能
-vim.cmd [[autocmd BufWritePre * %s/\s\+$//e ]]
+require("custom.autochad_cmds")
 
 -- MAPPINGS
 local map = require("core.utils").map
 
 -- map("n", "<leader>cc", ":Telescope <CR>")
-map("n", "<C-q>", ":q<CR>")
+-- map("n", "<C-q>", ":q<CR>")  --好像本人习惯于:q的退出模式，不习惯这样的按键
 
 -- 文件树
 map('n', '<A-t>', ':NvimTreeToggle<CR>')
@@ -21,8 +12,8 @@ map('n', '<A-t>', ':NvimTreeToggle<CR>')
 -- 历史修改记录
 map('n', '<A-u>', ':UndotreeToggle<CR>')
 
--- 格式化
-map('n', '<leader>fm', ':Autoformat<CR>')
+-- 格式化 这个快捷键好像不怎么起作用，还不如直接输入命令
+-- map('n', '<leader>fm', ':Autoformat<CR>')
 
 -- Y复制到系统剪切板
 map('v', 'Y', [["+y]])
@@ -39,7 +30,7 @@ map('n', 'sk', ':set nosplitright<CR>:split<CR>')
 -- Copy to system clippboard
 map("n", "<leader>y", '"+y')
 map("v", "<leader>y", '"+y')
--- Y复制到系统剪切板
+-- 在可视模式下，大写 Y 复制到系统剪切板
 map('v', 'Y', [["+y]])
 
 -- Paste from system clippboard
@@ -57,6 +48,5 @@ map("v", "K", ":move '<-2<CR>gv-gv")
 map('n', '<leader>tm', ':TableModeToggle<CR>')
 
 -- markdown预览
-map('n', '<A-r>', ':MarkdownPreviewToggle<CR>')
+-- map('n', '<A-r>', ':MarkdownPreviewToggle<CR>')
 
--- NOTE: the 4th argument in the map function is be a table i.e options but its most likely un-needed so dont worry about it

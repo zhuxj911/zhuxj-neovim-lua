@@ -26,8 +26,10 @@ return {
 
   {
     "williamboman/nvim-lsp-installer",
-    requires = "neovim/nvim-lspconfig",
-	event = "VimEnter",
+	 opt = true,
+     setup = function()
+		require("core.utils").packer_lazy_load "nvim-lsp-installer"
+     end,
   },
 
   -- 快速分析启动时间

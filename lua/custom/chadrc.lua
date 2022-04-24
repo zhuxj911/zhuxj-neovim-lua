@@ -10,28 +10,28 @@ M.options = {
   -- 配置剪切板
   clipboard = "",
   -- clipboard = "unnamedplus",
---[[
-vim 通过寄存器 * 或 + 与系统剪贴板相互支持，可过reg命令查看
-寄存器的含义如下：
- " 未命名寄存器 上一次复制或删除的文本
- 0-9 数字寄存器 文本复制和删除历史
- - 行内删除寄存器 删除少于一行的文本
- a-z, A-Z 命名寄存器 删除少于一行的文本
- % . : 只读寄存器  %当前文件名   . 最近插入的文本 :最近执行的命令行
- # 轮换缓冲区寄存器 交替文件的名字
+  --[[
+  vim 通过寄存器 * 或 + 与系统剪贴板相互支持，可过reg命令查看
+  寄存器的含义如下：
+  " 未命名寄存器 上一次复制或删除的文本
+  0-9 数字寄存器 文本复制和删除历史
+  - 行内删除寄存器 删除少于一行的文本
+  a-z, A-Z 命名寄存器 删除少于一行的文本
+  % . : 只读寄存器  %当前文件名   . 最近插入的文本 :最近执行的命令行
+  # 轮换缓冲区寄存器 交替文件的名字
 
- 如果想将系统剪贴板中的内容粘贴到当前位置，可在命令模式下输入：
- "+p   或 "*p  命令即可
- 简单的设置： vim.o.clipboard = "unnamedplus"
- 这行命令的意思是将要复制的内容设置到所有的寄存器，包括与系统交互的 + * 寄存器
- 如果这样设置，在vim中的任意一个删除 x、d 命令都讲发送到粘贴板，有些不爽啊
- 如何在vim中将所要copy的内容发送到系统剪贴板呢？
- 命令 "+yy 或 "*yy
- * 系统剪切板  + 系统剪切板(X11) ~ 拖曳的文本
- - 彻底删除的文本
- / 最近搜索模式
+  如果想将系统剪贴板中的内容粘贴到当前位置，可在命令模式下输入：
+  "+p   或 "*p  命令即可
+  简单的设置： vim.o.clipboard = "unnamedplus"
+  这行命令的意思是将要复制的内容设置到所有的寄存器，包括与系统交互的 + * 寄存器
+  如果这样设置，在vim中的任意一个删除 x、d 命令都讲发送到粘贴板，有些不爽啊
+  如何在vim中将所要copy的内容发送到系统剪贴板呢？
+  命令 "+yy 或 "*yy
+  * 系统剪切板  + 系统剪切板(X11) ~ 拖曳的文本
+  - 彻底删除的文本
+  / 最近搜索模式
 
- 粘贴寄存器
+  粘贴寄存器
   命令:put 可将寄存器中的内容粘贴到指定的文本行后面
   :5put a     将寄存器a中的内容粘贴到第5行的后面
   :5put! a    粘贴到这一行的前面
@@ -62,75 +62,110 @@ vim 通过寄存器 * 或 + 与系统剪贴板相互支持，可过reg命令查�
 }
 
 M.ui = {
-    hl_override = "", -- path of your file that contains highlights
-    italic_comments = false,
-    theme = "chadracula", -- default theme
-	-- theme = "gruvchad",
+  hl_override = "", -- path of your file that contains highlights
+  italic_comments = false,
+  theme = "chadracula", -- default theme
+  -- theme = "gruvchad",
 
-   -- Change terminal bg to nvim theme's bg color so it'll match well
-   -- For Ex : if you have onedark set in nvchad, set onedark's bg color on your terminal
-   transparency = false,
+  -- Change terminal bg to nvim theme's bg color so it'll match well
+  -- For Ex : if you have onedark set in nvchad, set onedark's bg color on your terminal
+  transparency = false,
 }
 
 -- Install plugins
 local userPlugins = require "custom.plugins" -- path to table
 M.plugins = {
-   install = userPlugins,
-   -- enable/disable plugins (false for disable)
-   status = {
-      blankline = true, -- indentline stuff
-      bufferline = true, -- manage and preview opened buffers
-      colorizer = false, -- color RGB, HEX, CSS, NAME color codes
-      comment = true, -- easily (un)comment code, language aware
-      alpha = true, -- dashboard
-      better_escape = true, -- map to <ESC> with no lag
-      feline = true, -- statusline
-      gitsigns = true,
-      lspsignature = true, -- lsp enhancements
-      vim_matchup = true, -- improved matchit
-      cmp = true,
-      nvimtree = true,
-      autopairs = true,
-   },
+  install = userPlugins,
+  -- enable/disable plugins (false for disable)
+  status = {
+    blankline = true, -- indentline stuff
+    bufferline = true, -- manage and preview opened buffers
+    colorizer = false, -- color RGB, HEX, CSS, NAME color codes
+    comment = true, -- easily (un)comment code, language aware
+    alpha = true, -- dashboard
+    better_escape = true, -- map to <ESC> with no lag
+    feline = true, -- statusline
+    gitsigns = true,
+    lspsignature = true, -- lsp enhancements
+    vim_matchup = true, -- improved matchit
+    cmp = true,
+    nvimtree = true,
+    autopairs = true,
+  },
 
-	options={
-		packer = {
-			init_file = "plugins.packerInit",
-		},
-		autopairs = { loadAfter = "nvim-cmp" },
-		cmp = {
-			lazy_load = true,
-		},
-		lspconfig = {
-			setup_lspconf = "custom.plugins.lspconfig",
-		},
-		nvimtree = {
-         -- packerCompile required after changing lazy_load
-         lazy_load = true,
-		},
-		luasnip = {
-			snippet_path = {},
-		},
-		statusline = {
-			-- hide, show on specific filetypes
-			hidden = {
-				"help",
-				"NvimTree",
-				"terminal",
-				"alpha",
-			},
-			shown = {},
+  options={
+    packer = {
+      init_file = "plugins.packerInit",
+    },
+    autopairs = { loadAfter = "nvim-cmp" },
+    cmp = {
+      lazy_load = true,
+    },
+    lspconfig = {
+      setup_lspconf = "custom.plugins.lspconfig",
+    },
+    nvimtree = {
+      -- packerCompile required after changing lazy_load
+      lazy_load = true,
+    },
+    luasnip = {
+      snippet_path = {},
+    },
+    statusline = {
+      -- hide, show on specific filetypes
+      hidden = {
+        "help",
+        "NvimTree",
+        "terminal",
+        "alpha",
+      },
+      shown = {},
 
-			-- truncate statusline on small screens
-			shortline = true,
-			style = "default", -- default, round , slant , block , arrow
-		},
-		esc_insertmode_timeout = 300,
-	},
-	default_plugin_config_replace = {
-		dashboard = "custom.plugins.dashboard",
-	},
-	default_plugin_remove = {},
+      -- truncate statusline on small screens
+      shortline = true,
+      style = "default", -- default, round , slant , block , arrow
+    },
+    esc_insertmode_timeout = 300,
+  },
+  default_plugin_config_replace = {
+    dashboard = "custom.plugins.dashboard",
+  },
+  default_plugin_remove = {},
 }
 
+--- MAPPINGS ----
+
+-- non plugin
+M.mappings = {
+   -- custom = {}, -- custom user mappings
+
+   misc = {
+      copy_whole_file = "<C-a>", -- copy all contents of current buffer
+      copy_to_system_clipboard = "<C-c>", -- copy selected text (visual mode) or curent line (normal)
+      -- update_nvchad = "<leader>uu",
+      -- new_buffer = "<S-t>",
+      -- new_tab = "<C-t>b",
+      save_file = "<C-s>", -- save file using :w
+   },
+}
+
+
+-- plugins related mappings
+-- To disable a mapping, equate the variable to "" or false or nil in chadrc
+M.mappings.plugins = {
+   comment = {
+      toggle = "<leader>/",
+   },
+   telescope = {
+      buffers = "<leader>fb",
+      find_files = "<leader>ff",
+      find_hiddenfiles = "<leader>fa",
+      git_commits = "<leader>cm",
+      git_status = "<leader>gt",
+      help_tags = "<leader>fh",
+      live_grep = "<leader>fw",
+      oldfiles = "<leader>fo",
+      themes = "<leader>th", -- NvChad theme picker
+   },
+}
 return M
