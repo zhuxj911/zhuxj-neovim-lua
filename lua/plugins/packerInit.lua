@@ -12,9 +12,9 @@ if not present then
       "git",
       "clone",
       -- "https://github.com/wbthomason/packer.nvim",
-	  "https://gitcode.net/mirrors/wbthomason/packer.nvim",
+      "https://gitcode.net/mirrors/wbthomason/packer.nvim",
       "--depth",
-      "1",
+      "20",
       packer_path,
    }
 
@@ -28,18 +28,14 @@ if not present then
    end
 end
 
-packer.init {
+local options = {
    display = {
       open_fn = function()
-         return require("packer.util").float { border = "single" }
+         return require("packer.util").float { border = "double" }
       end,
-      prompt_border = "single",
    },
-   -- 最大并发数 2022.4.19 6:10 由zhuxj添加，用于git定义
-   max_jobs = 16,
-   -- 自定义源
    git = {
-      -- 2022.4.18 23:35 由zhuxj添加，用于git定义
+      -- 2022.5.17 16:03 由zhuxj添加，用于git定义
       -- default_url_format = "https://hub.fastgit.xyz/%s",
       default_url_format = "https://mirror.ghproxy.com/https://github.com/%s",
       -- default_url_format = "https://gitcode.net/mirrors/%s",
@@ -48,6 +44,11 @@ packer.init {
    },
    auto_clean = true,
    compile_on_sync = true,
+   snapshot = nil,
 }
+
+options = nvchad.load_override(options, "wbthomason/packer.nvim")
+
+packer.init(options)
 
 return packer
