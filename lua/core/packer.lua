@@ -1,19 +1,12 @@
-# zhuxj-neovim-lua
+local M = {}
 
-neovim 6.0+ lua configuration
+M.bootstrap = function()
+   local fn = vim.fn
+   local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 
-我的 neovim 6.0+ lua 配置，基于 NvChad 架构:
+   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1e222a" })
 
-https://github.com/NvChad/
-
-可以自定义git源。
-
-由于 Wall 的关系，将git的地址进行了修改：
-
-nvim/lua/packer.lua 中修改：
-注释了原来的地址，新加入了git地址
-
-  if fn.empty(fn.glob(install_path)) > 0 then
+   if fn.empty(fn.glob(install_path)) > 0 then
       print "Cloning packer .."
 
       fn.system { "git", "clone", "--depth", "1", 
@@ -28,8 +21,7 @@ nvim/lua/packer.lua 中修改：
       require "plugins"
       vim.cmd "PackerSync"
    end
-
-下面中的 git 部分为新加入的
+end
 
 M.options = {
    auto_clean = true,
@@ -55,19 +47,27 @@ M.options = {
    },
 }
 
+-- merge overrides if there are any
+M.options = nvchad.load_override(M.options, "wbthomason/packer.nvim")
 
+M.run = function(plugins)
+   local present, packer = pcall(require, "packer")
 
-nvim/lua/plugins/configs中的treesitter.lua中加入了git地址：
+   if not present then
+      return
+   end
 
-for _, config in pairs(require("nvim-treesitter.parsers").get_parser_configs()) do
-  config.install_info.url = config.install_info.url:gsub("https://github.com/", "https://mirror.ghproxy.com/https://github.com/")
+   -- Override with chadrc values
+   plugins = nvchad.remove_default_plugins(plugins)
+   plugins = nvchad.merge_plugins(plugins)
+
+   packer.init(M.options)
+
+   packer.startup(function(use)
+      for _, v in pairs(plugins) do
+         use(v)
+      end
+   end)
 end
 
-
-加入了custom文件夹，在 init.lua文件中加入了：
-
--- 在文件保存时自动删除行末的空白符， 非常棒的功能
-vim.cmd [[autocmd BufWritePre * %s/\s\+$//e ]]
-
-
-其他的一切基本没修过。 All is ok！
+return M
