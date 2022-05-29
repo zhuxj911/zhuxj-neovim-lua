@@ -12,7 +12,7 @@ if not present then
       "git",
       "clone",
       -- "https://github.com/wbthomason/packer.nvim",
-      "https://gitcode.net/mirrors/wbthomason/packer.nvim",
+      "https://mirror.ghproxy.com/https://github.com/wbthomason/packer.nvim",
       "--depth",
       "20",
       packer_path,
